@@ -1,3 +1,7 @@
+# Redux Crash Course
+The source code of this repository is taken from Traversy Media's (React Crash Course With React)[https://www.youtube.com/watch?v=93p3LxR9xfM] video.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
