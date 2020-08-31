@@ -1,49 +1,67 @@
-import React, { useState } from 'react'
-import axios from 'axios';
+import React, { Component } from 'react'
+import PropTypes from "prop-types";
+import { connect } from 'react-redux';
+import { createPost } from '../actions/postActions';
 
-function PostForm() {
-	const [title, setTitle] = useState('');
-	const [body, setBody] = useState('');
 
-	const onChange = (e) => {
-		e.target.name === 'title' ? setTitle(e.target.value) : setBody(e.target.value)
+
+class PostForm extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			title: '',
+			body: ''
+		};
+
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+	
+	onChange(e) {
+		this.setState({
+			[e.target.name]: e.target.value
+		});
 	}
 
-	const onSubmit = (e) => {
+	onSubmit(e) {
 		e.preventDefault();
 
 		const post = {
-			title,
-			body
+			title: this.state.title,
+			body: this.state.body
 		};
 
-		axios.post('https://jsonplaceholder.typicode.com/posts', {
-					post
-				})
-				.then(res => {
-					console.log(res.data);
-				})
+		this.props.createPost(post);
+
 	}
 
-	return (
-		<div>
-			<h1>Add Post</h1>
-			<form onSubmit={onSubmit}>
-				<div>
-					<label htmlFor="title">Title: </label> <br />
-					<input type="text" name="title" onChange={onChange} value={title } />
-				</div>
-				<br />
-				<div>
-					<label htmlFor="body">Body: </label> <br />
-					<textarea name="body" onChange={onChange} value={body} />
-				</div>
-				<br />
-				<button type="submit">Submit</button>
-			</form>
-		</div>
-	)
+	render() {
+		return (
+			<div>
+				<h1>Add Post</h1>
+				<form onSubmit={this.onSubmit}>
+					<div>
+						<label htmlFor="title">Title: </label> <br />
+						<input type="text" name="title" onChange={this.onChange} value={this.state.title } />
+					</div>
+					<br />
+					<div>
+						<label htmlFor="body">Body: </label> <br />
+						<textarea name="body" onChange={this.onChange} value={this.state.body} />
+					</div>
+					<br />
+					<button type="submit">Submit</button>
+				</form>
+			</div>
+		)
+	}
 }
 
 
-export default PostForm;
+PostForm.propTypes = {
+	createPost: PropTypes.func.isRequired
+}
+
+
+export default connect(null, { createPost })(PostForm);

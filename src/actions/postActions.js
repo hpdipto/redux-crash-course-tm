@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import axios from 'axios';
 import { FETCH_POSTS, NEW_POST } from './types';
 
@@ -10,4 +9,18 @@ export const fetchPosts = () => dispatch => {
 					payload: res.data
 				})
 			);
+}
+
+
+export const createPost = (postData) => dispatch => {
+	axios.post('https://jsonplaceholder.typicode.com/posts', {
+				postData
+			})
+			.then(res => {
+						dispatch({
+							type: NEW_POST,
+							payload: {...res.data.postData}
+						});
+					}
+				)
 }
